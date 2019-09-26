@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Route} from 'react-router-dom'
 import BookmarkItem from '../BookmarkItem/BookmarkItem';
 import './BookmarkList.css'
 import BookmarksContext from '../BookmarksContext'
@@ -13,10 +14,14 @@ export default class BookmarkList extends Component {
         <h2>Your bookmarks</h2>
         <ul className='BookmarkList__list' aria-live='polite'>
           {bookmarks.map(bookmark =>
-            <BookmarkItem
-              key={bookmark.id}
-              {...bookmark}
-            />
+
+          <Route exact path = '/'
+            render={({history})=>{
+                return <BookmarkItem updateBookmarkId={()=>history.push('/')}
+                deleteBookmarkRequest={()=>history.push('/')} key={bookmark.id} bookmark={bookmark}
+              />
+            }}
+            /> 
           )}
         </ul>
       </section>

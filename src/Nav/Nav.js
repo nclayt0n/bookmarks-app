@@ -11,6 +11,8 @@ export default function Nav(props) {
       <Link to={'/add-bookmark'}>
         Add Bookmark
       </Link>
+      {' '}
+      <Link to={'/update-bookmark'}>Update Bookmark</Link>
     </nav>
   );
 }

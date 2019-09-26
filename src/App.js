@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom';
 import AddBookmark from './AddBookmark/AddBookmark';
 import BookmarkList from './BookmarkList/BookmarkList';
 import Nav from './Nav/Nav';
-
+import UpdateBookmark from './updateBookmark/updateBookmark'
 import config from './config';
 import './App.css';
 import BookmarksContext from './BookmarksContext';
@@ -14,9 +14,9 @@ class App extends Component {
     state = {
         bookmarks:[],
         error: null,
+        updateBookmark:{}
     };
     setBookmarks = bookmarks => {
-        console.log(bookmarks)
         this.setState({
             bookmarks,
             error: null,
@@ -34,6 +34,19 @@ class App extends Component {
         this.setState({
           bookmarks:newBookmarks
         })
+    }
+    updateBookmarkId=(bookmark,history)=>{
+        this.setState({
+            updateBookmark:bookmark
+        })
+        console.log(bookmark,history)
+        history.push('/update-bookmark')
+       
+    }
+    updateBookmark=bookmark=>{
+        this.setState({
+            bookmarks:bookmark,...this.state.bookmarks
+})
     }
     componentDidMount() {
         fetch(config.API_ENDPOINT, {
@@ -54,12 +67,13 @@ class App extends Component {
     }
 
     render() {
-        console.log(this.state)
         const contextValue={
+        bookmarkToUpdate:this.state.updateBookmark,
           bookmarks:this.state.bookmarks,
           addBookmark:this.addBookmark,
           deleteBookmark:this.deleteBookmark,
           updateBookmark:this.updateBookmark,
+          updateBookmarkId:this.updateBookmarkId,
         }
         return ( 
         <main className = 'App'>
@@ -77,8 +91,8 @@ class App extends Component {
             render={()=>{
                 return <BookmarkList/>
             }}
-
             /> 
+            <Route path='/update-bookmark' component={UpdateBookmark}/>
             </div> 
             </BookmarksContext.Provider>
             <Rating value={5}/>

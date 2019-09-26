@@ -3,14 +3,17 @@ import Rating from '../Rating/Rating';
 import BookmarksContext from '../BookmarksContext'
 import './BookmarkItem.css';
 import config from '../config'
+import {withRouter} from 'react-router-dom'
+import UpdateBookmark from '../updateBookmark/updateBookmark';
 
-function deleteBookmarkRequest(bookmarkId, callback) {
+function deleteBookmarkRequest(bookmarkId, callback,props) {
+  console.log(props)
   fetch(config.API_ENDPOINT + `/${bookmarkId}`, {
     method: 'DELETE',
     headers: {
       'Authorization': `Bearer${config.API_TOKEN}`
     }
-  })
+  }) 
     .then(res => {
       if (!res.ok) {
         // get the error message from the response,
@@ -19,43 +22,46 @@ function deleteBookmarkRequest(bookmarkId, callback) {
           throw error
         })
       }
-      return res.json()
     })
     .then(data => {
       // call the callback when the request is successful
       // this is where the App component can remove it from state
       callback(bookmarkId)
-    })
+    }) 
     .catch(error => {
       console.error(error)
     })
+    props.history.push('/')
 }
 // https://bookmarks-app?token=IzsEoKLGoAhCCxeATLrFhO8R.now.sh
 
-function BookmarkItem(props) {
-  console.log(props)
+class BookmarkItem extends React.Component { 
+  render(){
+  console.log(this.props)
   return (
     <BookmarksContext.Consumer>
       {(context)=>(
+       
     <li className='BookmarkItem'>
       <div className='BookmarkItem__row'>
         <h3 className='BookmarkItem__title'>
           <a
-            href={props.url}
+            href={this.props.bookmark.url}
             target='_blank'
             rel='noopener noreferrer'>
-            {props.title}
+            {this.props.bookmark.title}
           </a>
         </h3>
-        <Rating value={props.rating} />
+        <Rating value={this.props.bookmark.rating} />
       </div>
       <p className='BookmarkItem__description'>
-        {props.description}
+        {this.props.bookmark.description}
       </p>
       <div className='BookmarkItem__buttons'>
+      <button className='update_Bookmark' onClick={()=>{context.updateBookmarkId(this.props.bookmark,this.props.history)}}>Update</button>
         <button
           className='BookmarkItem__description'
-          onClick={() => {deleteBookmarkRequest(props.id,context.deleteBookmark,
+          onClick={() => {deleteBookmarkRequest(this.props.bookmark.id,context.deleteBookmark,this.props
           )
           }}
         >
@@ -66,5 +72,6 @@ function BookmarkItem(props) {
      )}
     </BookmarksContext.Consumer>
   )}
+        }
 
-  export default BookmarkItem
+  export default withRouter(BookmarkItem)
