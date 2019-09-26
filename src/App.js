@@ -1,8 +1,10 @@
+// require ('dotenv').config();
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import AddBookmark from './AddBookmark/AddBookmark';
 import BookmarkList from './BookmarkList/BookmarkList';
 import Nav from './Nav/Nav';
+
 import config from './config';
 import './App.css';
 import BookmarksContext from './BookmarksContext';
@@ -14,6 +16,7 @@ class App extends Component {
         error: null,
     };
     setBookmarks = bookmarks => {
+        console.log(bookmarks)
         this.setState({
             bookmarks,
             error: null,
@@ -37,7 +40,7 @@ class App extends Component {
                 method: 'GET',
                 headers: {
                     'content-type': 'application/json',
-                    'Authorization': `Bearer ${config.API_KEY}`
+                    'Authorization': `Bearer${config.API_TOKEN}`
                 }
             })
             .then(res => {
@@ -51,10 +54,12 @@ class App extends Component {
     }
 
     render() {
+        console.log(this.state)
         const contextValue={
           bookmarks:this.state.bookmarks,
           addBookmark:this.addBookmark,
           deleteBookmark:this.deleteBookmark,
+          updateBookmark:this.updateBookmark,
         }
         return ( 
         <main className = 'App'>

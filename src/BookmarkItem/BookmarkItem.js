@@ -8,7 +8,7 @@ function deleteBookmarkRequest(bookmarkId, callback) {
   fetch(config.API_ENDPOINT + `/${bookmarkId}`, {
     method: 'DELETE',
     headers: {
-      'authorization': `bearer ${config.API_KEY}`
+      'Authorization': `Bearer${config.API_TOKEN}`
     }
   })
     .then(res => {
@@ -30,9 +30,9 @@ function deleteBookmarkRequest(bookmarkId, callback) {
       console.error(error)
     })
 }
-https://bookmarks-app?token=IzsEoKLGoAhCCxeATLrFhO8R.now.sh
+// https://bookmarks-app?token=IzsEoKLGoAhCCxeATLrFhO8R.now.sh
 
-export default function BookmarkItem(props) {
+function BookmarkItem(props) {
   console.log(props)
   return (
     <BookmarksContext.Consumer>
@@ -66,3 +66,5 @@ export default function BookmarkItem(props) {
      )}
     </BookmarksContext.Consumer>
   )}
+
+  export default BookmarkItem
