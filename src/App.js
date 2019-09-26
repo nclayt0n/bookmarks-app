@@ -11,8 +11,22 @@ import BookmarksContext from './BookmarksContext';
 import Rating from './Rating/Rating'
 
 class App extends Component {
+    static defaultProps={
+    description: "personal profiles",
+id: 1,
+rating: 3,
+title: "Fbook",
+url: "https://www.facebook.com/",
+}
+
     state = {
-        bookmarks:[],
+        bookmarks:[{
+            description: "personal profiles",
+        id: 1,
+        rating: 3,
+        title: "Fbook",
+        url: "https://www.facebook.com/",
+        },],
         error: null,
         updateBookmark:{}
     };
@@ -67,6 +81,7 @@ class App extends Component {
     }
 
     render() {
+        console.log(this.state)
         const contextValue={
         bookmarkToUpdate:this.state.updateBookmark,
           bookmarks:this.state.bookmarks,
@@ -89,7 +104,7 @@ class App extends Component {
             <Route exact path = '/'
             // component={BookmarkList}
             render={()=>{
-                return <BookmarkList/>
+                return <BookmarkList bookmarks={this.state.bookmarks}/>
             }}
             /> 
             <Route path='/update-bookmark' component={UpdateBookmark}/>

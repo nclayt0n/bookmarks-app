@@ -8,6 +8,7 @@ export default class BookmarkList extends Component {
   static contextType=BookmarksContext;
 
   render() {
+    console.log(this.props)
     const { bookmarks } = this.context
     return (
       <section className='BookmarkList'>

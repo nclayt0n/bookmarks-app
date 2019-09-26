@@ -87,14 +87,6 @@ console.log(bookmarkToUpdate)
         {this.context.bookmarkToUpdate.description}
       </p>
       <div className='BookmarkItem__buttons'>
-        <button
-          className='BookmarkItem__description'
-          onClick={() => {this.context.deleteBookmarkRequest(this.context.bookmarkToUpdate.id,this.context.deleteBookmark,this.props
-          )
-          }}
-        >
-          Delete
-        </button>
       </div>
     </div>
             <form
