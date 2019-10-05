@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "alias": "https://nicoles-bookmarks-app.now.sh",
+    "alias": "my-bookmark-app",
     "name": "bookmarks-app",
     "routes": [{
             "src": "^/static/(.*)",

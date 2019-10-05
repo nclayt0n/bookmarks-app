@@ -14,6 +14,6 @@ export default function Rating(props) {
     </div>
   );
 }
-Rating.propTypes={
-  value:PropTypes.oneOf([1,2,3,4,5]).isRequired
-}
+// Rating.propTypes={
+//   value:PropTypes.oneOf([1,2,3,4,5]).isRequired
+// }
