@@ -1,15 +1,15 @@
-// require ('dotenv').config();
+
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import AddBookmark from './AddBookmark/AddBookmark';
 import BookmarkList from './BookmarkList/BookmarkList';
 import Nav from './Nav/Nav';
 import UpdateBookmark from './updateBookmark/updateBookmark'
-import config from './config';
 import './App.css';
 import BookmarksContext from './BookmarksContext';
 import Rating from './Rating/Rating'
-
+import config from './config';
+const uuidv4 = require('uuid/v4');
 class App extends Component {
     static defaultProps={
     description: "personal profiles",
@@ -53,13 +53,14 @@ url: "https://www.facebook.com/",
         this.setState({
             updateBookmark:bookmark
         })
-        console.log(bookmark,history)
         history.push('/update-bookmark')
        
     }
     updateBookmark=bookmark=>{
         this.setState({
-            bookmarks:bookmark,...this.state.bookmarks
+            bookmarks:[...this.state.bookmarks.filter(bm=>
+                bm.id!==bookmark.id
+                ),bookmark]
 })
     }
     componentDidMount() {
@@ -67,7 +68,7 @@ url: "https://www.facebook.com/",
                 method: 'GET',
                 headers: {
                     'content-type': 'application/json',
-                    'Authorization': `Bearer${config.API_TOKEN}`
+                    'Authorization': `Bearer${config.API_KEY}`
                 }
             })
             .then(res => {
@@ -81,7 +82,6 @@ url: "https://www.facebook.com/",
     }
 
     render() {
-        console.log(this.state)
         const contextValue={
         bookmarkToUpdate:this.state.updateBookmark,
           bookmarks:this.state.bookmarks,
@@ -104,7 +104,7 @@ url: "https://www.facebook.com/",
             <Route exact path = '/'
             // component={BookmarkList}
             render={()=>{
-                return <BookmarkList bookmarks={this.state.bookmarks}/>
+                return <BookmarkList bookmarks={this.state.bookmarks} key={uuidv4()}/>
             }}
             /> 
             <Route path='/update-bookmark' component={UpdateBookmark}/>

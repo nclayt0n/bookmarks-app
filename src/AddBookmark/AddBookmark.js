@@ -15,9 +15,7 @@ class AddBookmark extends Component {
   };
 
   handleSubmit = e => {
-    console.log(process.env.API_ENDPOINT)
     e.preventDefault()
-    // get the form fields from the event
     const { title, url, description, rating } = e.target
     const bookmark = {
       title: title.value,
@@ -31,11 +29,10 @@ class AddBookmark extends Component {
       body: JSON.stringify(bookmark),
       headers: {
         'content-type': 'application/json',
-        'Authorization': `Bearer${process.env.API_TOKEN}`
+        'Authorization': `Bearer${config.API_KEY}`
       }
     })
       .then(res => {
-        console.log(res)
         if (!res.ok) {
           // get the error message from the response,
           return res.json().then(error => {
@@ -54,7 +51,6 @@ class AddBookmark extends Component {
         this.props.history.push('/')
       })
       .catch(error => {
-        console.log(error)
         this.setState({ error })
       })
   }

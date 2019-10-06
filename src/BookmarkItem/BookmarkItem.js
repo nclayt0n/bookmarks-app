@@ -4,14 +4,13 @@ import BookmarksContext from '../BookmarksContext'
 import './BookmarkItem.css';
 import config from '../config'
 import {withRouter} from 'react-router-dom'
-import UpdateBookmark from '../updateBookmark/updateBookmark';
+
 
 function deleteBookmarkRequest(bookmarkId, callback,props) {
-  console.log(props)
   fetch(config.API_ENDPOINT + `/${bookmarkId}`, {
     method: 'DELETE',
     headers: {
-      'Authorization': `Bearer${config.API_TOKEN}`
+      'Authorization': `Bearer${config.API_KEY}`
     }
   }) 
     .then(res => {
@@ -37,7 +36,6 @@ function deleteBookmarkRequest(bookmarkId, callback,props) {
 
 class BookmarkItem extends React.Component { 
   render(){
-  console.log(this.props)
   return (
     <BookmarksContext.Consumer>
       {(context)=>(

@@ -1,14 +1,13 @@
 import React from 'react'
 import BookmarksContext from '../BookmarksContext'
 import config from '../config'
-import {Route,Link} from 'react-router-dom'
-import BookmarkItem from '../BookmarkItem/BookmarkItem'
+import {Link,withRouter} from 'react-router-dom'
 import Rating from '../Rating/Rating';
 
-const Required = () => (
-  <span className='AddBookmark__required'>*</span>
-)
-export default class UpdateBookmark extends React.Component{
+// const Required = () => (
+//   <span className='AddBookmark__required'>*</span>
+// )
+ class UpdateBookmark extends React.Component{
     static contextType=BookmarksContext;
     constructor(){
         super()
@@ -19,7 +18,6 @@ export default class UpdateBookmark extends React.Component{
   handleSubmit=(e)=>{
     const bookmarkToUpdate=this.context.bookmarkToUpdate
     e.preventDefault()
-    console.log(this.props)
 if(e.target.title.value.length>0){
     bookmarkToUpdate.title=e.target.title.value
 }else{
@@ -37,37 +35,25 @@ if(e.target.title.value.length>0){
 }else{
     bookmarkToUpdate.rating=this.context.bookmarkToUpdate.rating
 }
-console.log(bookmarkToUpdate)
     this.setState({ error: null })
     fetch(`${config.API_ENDPOINT}/${this.context.bookmarkToUpdate.id}`, {
       method: 'PATCH',
       body: JSON.stringify(bookmarkToUpdate),
       headers: {
         'content-type': 'application/json',
-        'Authorization': `Bearer${config.API_TOKEN}`
+        'Authorization': `Bearer${config.API_KEY}`
       }
     })
-      .then(res => {
-        console.log(res)
-        if (!res.ok) {
-          // get the error message from the response,
-          return res.json().then(error => {
-            // then throw it
-            throw error
-          })
-        }
-      })
-      .then(data => {
-        this.context.updateBookmark(data)
-        
-      })
-      .catch(error => {
-        console.log(error)
-        this.setState({ error })
-      })
+    .then(this.context.updateBookmark({id:bookmarkToUpdate.id,description:bookmarkToUpdate.description,title:bookmarkToUpdate.title,rating:parseInt(bookmarkToUpdate.rating),url:bookmarkToUpdate.url}))
+        .catch(error =>{
+            this.setState({error})
+        })
+        this.setState=({
+          id:bookmarkToUpdate.id,description:bookmarkToUpdate.description,title:bookmarkToUpdate.title,rating:parseInt(bookmarkToUpdate.rating),url:bookmarkToUpdate.url
+        });
+        this.props.history.push('/')
   }
     render(){
-        console.log(this.props)
         const { error } = this.state 
         return(<>
 
@@ -156,3 +142,4 @@ console.log(bookmarkToUpdate)
         </>)
     }
 }
+export default withRouter(UpdateBookmark)
